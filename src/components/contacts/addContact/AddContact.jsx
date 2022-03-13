@@ -48,9 +48,11 @@ const AddContact = () => {
                   <input
                     type="submit"
                     className="btn btn-success"
-                    value='Create'
+                    value="Create"
                   />
-                  <Link to={'/contacts/list'} className='btn btn-dark ms-2'>Cancel</Link>
+                  <Link to={"/contacts/list"} className="btn btn-dark ms-2">
+                    Cancel
+                  </Link>
                 </div>
               </form>
             </div>

@@ -68,3 +68,23 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+json-server => npm install json-server
+
+json file => db.json
+
+package.json => npm init --yes
+
+API 's
+
+--------
+
+Get all contacts : GET ->  http://localhost:9000/contacts
+
+Get a Single contact : GET ->  http://localhost:9000/contacts/Id
+
+Create a contact : POST ->  http://localhost:9000/contacts/
+
+Update a contact : PUT ->  http://localhost:9000/contacts/Id
+
+Delete a contact : DELETE ->  http://localhost:9000/contacts/Id
