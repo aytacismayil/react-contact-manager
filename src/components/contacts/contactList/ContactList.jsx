@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,8 +7,40 @@ import {
   faEdit,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
+import { ContactService } from "../../../services/ContactService";
+import Spinner from "../../spinner/Spinner";
 
 const ContactList = () => {
+  let [state, setState] = useState({
+    loading: false,
+    contacts: [],
+    errorMessage: "",
+  });
+
+  useEffect(async () => {
+    try {
+      setState({
+        ...state,
+        loading: true,
+      });
+      let response = await ContactService.getAllContacts();
+      console.log(response.data);
+      setState({
+        ...state,
+        loading: false,
+        contacts: response.data,
+      });
+    } catch (error) {
+      setState({
+        ...state,
+        loading: false,
+        contacts: error.message,
+      });
+    }
+  }, []);
+
+  let { loading, contacts, errorMessage } = state;
+
   return (
     <React.Fragment>
       <section className="contact-search p-3">
@@ -54,59 +86,77 @@ const ContactList = () => {
         </div>
       </section>
 
-      <section className="contact-list">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-6">
-              <div className="card">
-                <div className="card-body">
-                  <div className="row align-items-center d-flex justify-content-around">
-                    <div className="col-md-4">
-                      <img
-                        src="https://cdn-icons-png.flaticon.com/512/147/147144.png"
-                        alt="avatar"
-                        className="img-fluid contact-img"
-                      />
-                    </div>
-                    <div className="col-md-7">
-                      <ul className="list-group">
-                        <li className="list-group-item list-group-item-action">
-                          Name : <span className="fw-bold">Aytaj</span>
-                        </li>
-                        <li className="list-group-item list-group-item-action">
-                          Email :
-                          <span className="fw-bold">Aytaj@gmail.com</span>
-                        </li>
-                        <li className="list-group-item list-group-item-action">
-                          Phone :
-                          <span className="fw-bold">+994 55 000 00 00</span>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="col-md-1 d-flex flex-column align-items-center">
-                      <Link
-                        to={"/contacts/view/:contactId"}
-                        className="btn btn-warning my-1"
-                      >
-                        <FontAwesomeIcon icon={faEye} />
-                      </Link>
-                      <Link
-                        to={"/contacts/edit/:contactId"}
-                        className="btn btn-success my-1"
-                      >
-                        <FontAwesomeIcon icon={faEdit} />
-                      </Link>
-                      <Link to={""} className="btn btn-danger my-1">
-                        <FontAwesomeIcon icon={faTrash} />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <React.Fragment>
+          <section className="contact-list">
+            <div className="container">
+              <div className="row">
+                {contacts.length > 0 &&
+                  contacts.map((contact) => {
+                    return (
+                      <div className="col-md-6 mt-4" key={contact.id}>
+                        <div className="card">
+                          <div className="card-body">
+                            <div className="row align-items-center d-flex justify-content-around">
+                              <div className="col-md-4">
+                                <img
+                                  src="https://cdn-icons-png.flaticon.com/512/147/147144.png"
+                                  alt="avatar"
+                                  className="img-fluid contact-img"
+                                />
+                              </div>
+                              <div className="col-md-7">
+                                <ul className="list-group">
+                                  <li className="list-group-item list-group-item-action">
+                                    Name :
+                                    <span className="fw-bold">
+                                      {contact.name}
+                                    </span>
+                                  </li>
+                                  <li className="list-group-item list-group-item-action">
+                                    Email :
+                                    <span className="fw-bold">
+                                      {contact.email}
+                                    </span>
+                                  </li>
+                                  <li className="list-group-item list-group-item-action">
+                                    Phone :
+                                    <span className="fw-bold">
+                                      {contact.mobile}
+                                    </span>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div className="col-md-1 d-flex flex-column align-items-center">
+                                <Link
+                                  to={"/contacts/view/:contactId"}
+                                  className="btn btn-warning my-1"
+                                >
+                                  <FontAwesomeIcon icon={faEye} />
+                                </Link>
+                                <Link
+                                  to={"/contacts/edit/:contactId"}
+                                  className="btn btn-success my-1"
+                                >
+                                  <FontAwesomeIcon icon={faEdit} />
+                                </Link>
+                                <Link to={""} className="btn btn-danger my-1">
+                                  <FontAwesomeIcon icon={faTrash} />
+                                </Link>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
               </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
+        </React.Fragment>
+      )}
     </React.Fragment>
   );
 };
