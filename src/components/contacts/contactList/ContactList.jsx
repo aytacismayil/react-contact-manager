@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -42,11 +41,7 @@ const ContactList = () => {
     }
   }, []);
 
-<<<<<<< HEAD
   let { loading, contacts, errorMessage } = state;
-=======
-  let {loading,contacts,errorMessage} = state;
->>>>>>> e87cf9758fdc2a3b7905fdc2e636e5afe6f644a1
 
   return (
     <React.Fragment>
@@ -55,13 +50,12 @@ const ContactList = () => {
           <div className="grid">
             <div className="row">
               <div className="col">
-                <p className="h3 fw-bold">
-                  Contact Manager
+                <p className="h3 fw-bold d-flex justify-content-between align-items-center">
+                 <div> Contact Manager</div>
                   <Link to={"/contacts/add"} className="btn btn-primary ms-2">
-                    <FontAwesomeIcon icon={faCirclePlus} />
+                    <FontAwesomeIcon icon={faCirclePlus} /> Create
                   </Link>
                 </p>
-                <p>Kişisel İş Takip Uygulaması</p>
               </div>
             </div>
             <div className="row">
@@ -109,8 +103,8 @@ const ContactList = () => {
                             <div className="row align-items-center d-flex justify-content-around">
                               <div className="col-md-4">
                                 <img
-                                  src="https://cdn-icons-png.flaticon.com/512/147/147144.png"
-                                  alt="avatar"
+                                  src={contact.photo}
+                                  alt={contact.name}
                                   className="img-fluid contact-img"
                                 />
                               </div>
@@ -138,7 +132,7 @@ const ContactList = () => {
                               </div>
                               <div className="col-md-1 d-flex flex-column align-items-center">
                                 <Link
-                                  to={"/contacts/view/:contactId"}
+                                  to={`/contacts/view/${contact.id}`}
                                   className="btn btn-warning my-1"
                                 >
                                   <FontAwesomeIcon icon={faEye} />
