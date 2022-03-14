@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,8 +7,39 @@ import {
   faEdit,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
+import { ContactService } from "../../../services/ContactService";
 
 const ContactList = () => {
+  let [state, setState] = useState({
+    loading: false,
+    contacts: [],
+    errorMessage: "",
+  });
+
+  useEffect(async () => {
+    try {
+      setState({
+        ...state,
+        loading: true,
+      });
+      let response = await ContactService.getAllContacts();
+      console.log(response.data);
+      setState({
+        ...state,
+        loading: false,
+        contacts: response.data,
+      });
+    } catch (error) {
+      setState({
+        ...state,
+        loading: false,
+        contacts: error.message,
+      });
+    }
+  }, []);
+
+  let {loading,contacts,errorMessage} = state;
+
   return (
     <React.Fragment>
       <section className="contact-search p-3">
