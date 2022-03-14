@@ -50,15 +50,15 @@ const ContactList = () => {
           <div className="grid">
             <div className="row">
               <div className="col">
-                <p className="h3 fw-bold d-flex justify-content-between align-items-center">
+                <div className="h3 fw-bold d-flex justify-content-between align-items-center">
                  <div> Contact Manager</div>
                   <Link to={"/contacts/add"} className="btn btn-primary ms-2">
                     <FontAwesomeIcon icon={faCirclePlus} /> Create
                   </Link>
-                </p>
+                </div>
               </div>
             </div>
-            <div className="row">
+            <div className="row mt-4">
               <div className="col-md-6">
                 <form className="row">
                   <div className="col">
