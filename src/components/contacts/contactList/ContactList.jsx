@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -8,7 +9,9 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { ContactService } from "../../../services/ContactService";
+
 import Spinner from "../../spinner/Spinner";
+
 
 const ContactList = () => {
   let [state, setState] = useState({
@@ -39,7 +42,11 @@ const ContactList = () => {
     }
   }, []);
 
+<<<<<<< HEAD
   let { loading, contacts, errorMessage } = state;
+=======
+  let {loading,contacts,errorMessage} = state;
+>>>>>>> e87cf9758fdc2a3b7905fdc2e636e5afe6f644a1
 
   return (
     <React.Fragment>
