@@ -15,14 +15,21 @@ export class ContactService {
     return axios.get(dataURL);
   }
 
-  //Contact
+  //Contact getAll
   static getAllContacts() {
     let dataUrl = `${this.serverUrl}/contacts`;
     return axios.get(dataUrl);
   }
 
+  //get Id
   static getContact(contactId) {
     let dataUrl = `${this.serverUrl}/contacts/${contactId}`;
     return axios.get(dataUrl);
+  }
+
+  //post
+  static createContact(contact) {
+    let dataUrl = `${this.serverUrl}/contacts`;
+    return axios.post(dataUrl, contact);
   }
 }
