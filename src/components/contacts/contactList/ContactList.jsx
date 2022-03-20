@@ -11,7 +11,6 @@ import { ContactService } from "../../../services/ContactService";
 
 import Spinner from "../../spinner/Spinner";
 
-
 const ContactList = () => {
   let [state, setState] = useState({
     loading: false,
@@ -41,6 +40,32 @@ const ContactList = () => {
     }
   }, []);
 
+  //Delete contact
+  let clickDelete = async (contactId) => {
+    try {
+      let response = await ContactService.deleteContact(contactId);
+      if (response) {
+        setState({
+          ...state,
+          loading: true,
+        });
+        let response = await ContactService.getAllContacts();
+        console.log(response.data);
+        setState({
+          ...state,
+          loading: false,
+          contacts: response.data,
+        });
+      }
+    } catch (error) {
+      setState({
+        ...state,
+        loading: false,
+        contacts: error.message,
+      });
+    }
+  };
+
   let { loading, contacts, errorMessage } = state;
 
   return (
@@ -51,7 +76,7 @@ const ContactList = () => {
             <div className="row">
               <div className="col">
                 <div className="h3 fw-bold d-flex justify-content-between align-items-center">
-                 <div> Contact Manager</div>
+                  <div> Contact Manager</div>
                   <Link to={"/contacts/add"} className="btn btn-primary ms-2">
                     <FontAwesomeIcon icon={faCirclePlus} /> Create
                   </Link>
@@ -129,23 +154,26 @@ const ContactList = () => {
                                     </span>
                                   </li>
                                 </ul>
-                              </div>
-                              <div className="col-md-1 d-flex flex-column align-items-center">
-                                <Link
-                                  to={`/contacts/view/${contact.id}`}
-                                  className="btn btn-warning my-1"
-                                >
-                                  <FontAwesomeIcon icon={faEye} />
-                                </Link>
-                                <Link
-                                  to={"/contacts/edit/:contactId"}
-                                  className="btn btn-success my-1"
-                                >
-                                  <FontAwesomeIcon icon={faEdit} />
-                                </Link>
-                                <Link to={""} className="btn btn-danger my-1">
-                                  <FontAwesomeIcon icon={faTrash} />
-                                </Link>
+                                <div className=" d-flex gap-2 align-items-center mt-2">
+                                  <Link
+                                    to={`/contacts/view/${contact.id}`}
+                                    className="btn btn-warning my-1"
+                                  >
+                                    <FontAwesomeIcon icon={faEye} />
+                                  </Link>
+                                  <Link
+                                    to={`/contacts/edit/${contact.id}`}
+                                    className="btn btn-success my-1"
+                                  >
+                                    <FontAwesomeIcon icon={faEdit} />
+                                  </Link>
+                                  <button
+                                    className="btn btn-danger my-1"
+                                    onClick={() => clickDelete(contact.id)}
+                                  >
+                                    <FontAwesomeIcon icon={faTrash} />
+                                  </button>
+                                </div>
                               </div>
                             </div>
                           </div>
