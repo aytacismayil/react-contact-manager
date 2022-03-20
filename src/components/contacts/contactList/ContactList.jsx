@@ -12,9 +12,14 @@ import { ContactService } from "../../../services/ContactService";
 import Spinner from "../../spinner/Spinner";
 
 const ContactList = () => {
+  let [query, setQuery] = useState({
+    text: "",
+  });
+
   let [state, setState] = useState({
     loading: false,
     contacts: [],
+    filteredContacts: [],
     errorMessage: "",
   });
 
@@ -30,6 +35,7 @@ const ContactList = () => {
         ...state,
         loading: false,
         contacts: response.data,
+        filteredContacts: response.data,
       });
     } catch (error) {
       setState({
@@ -55,6 +61,7 @@ const ContactList = () => {
           ...state,
           loading: false,
           contacts: response.data,
+          filteredContacts: response.data,
         });
       }
     } catch (error) {
@@ -66,7 +73,25 @@ const ContactList = () => {
     }
   };
 
-  let { loading, contacts, errorMessage } = state;
+  //search
+  let searchContacts = async (event) => {
+    setQuery({
+      ...query,
+      text: event.target.value,
+    });
+    let theContacts = state.contacts.filter((contact) => {
+      return contact.name
+        .toLowerCase()
+        .includes(event.target.value.toLowerCase());
+    });
+    setState({
+      ...state,
+      filteredContacts: theContacts,
+    });
+    console.log(theContacts);
+  };
+
+  let { loading, contacts, filteredContacts, errorMessage } = state;
 
   return (
     <React.Fragment>
@@ -90,6 +115,8 @@ const ContactList = () => {
                     <div className="mb-2">
                       <input
                         type="text"
+                        value={query.text}
+                        onChange={searchContacts}
                         className="form-control"
                         placeholder="Search Names"
                       />
@@ -119,8 +146,8 @@ const ContactList = () => {
           <section className="contact-list">
             <div className="container">
               <div className="row">
-                {contacts.length > 0 &&
-                  contacts.map((contact) => {
+                {filteredContacts.length > 0 &&
+                  filteredContacts.map((contact) => {
                     return (
                       <div className="col-md-6 mt-4" key={contact.id}>
                         <div className="card">
@@ -133,7 +160,7 @@ const ContactList = () => {
                                   className="img-fluid contact-img"
                                 />
                               </div>
-                              <div className="col-md-7">
+                              <div className="col-md-8">
                                 <ul className="list-group">
                                   <li className="list-group-item list-group-item-action">
                                     Name :
